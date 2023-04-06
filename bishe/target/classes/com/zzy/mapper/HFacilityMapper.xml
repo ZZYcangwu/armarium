@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzy.mapper.HFacilityMapper">
+    <resultMap id="BaseResultMap" type="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        <!--@Table h_facility-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="facility_type_id" jdbcType="INTEGER" property="facilityTypeId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="maintain_time" jdbcType="TIMESTAMP" property="maintainTime"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="facility_department_id" jdbcType="INTEGER" property="facilityDepartmentId"/>
+        <result column="facility_status_id" property="facilityStatusId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="DetailMap" type="com.zzy.pojo.HFacility" extends="BaseResultMap">
+        <association property="department" column="facility_department_id" select="com.zzy.mapper.DepartmentMapper.selectByPrimaryKey"/>
+        <association property="hFacilityType" column="facility_type_id" select="com.zzy.mapper.HFacilityTypeMapper.selectByPrimaryKey"/>
+        <association property="hStatus" column="facility_status_id" select="com.zzy.mapper.HStatusMapper.selectByPrimaryKey"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, facility_type_id, create_time, maintain_time, price, facility_department_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from h_facility
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="DetailMap">
+        select *
+        from h_facility
+        <where>
+            <if test="name != null and name != ''">
+                and name like CONCAT('%', #{name}, '%')
+            </if>
+            <if test="facilityTypeId != null and facilityTypeId != ''">
+                and facility_type_id = #{facilityTypeId}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete
+        from h_facility
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        insert into h_facility (id, `name`, facility_type_id,
+                                create_time, maintain_time, price,
+                                facility_department_id, facility_status_id)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{facilityTypeId,jdbcType=INTEGER},
+                #{createTime,jdbcType=TIMESTAMP}, #{maintainTime,jdbcType=TIMESTAMP}, #{price,jdbcType=DOUBLE},
+                #{facilityDepartmentId,jdbcType=INTEGER}, #{facilityStatusId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        insert into h_facility
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="facilityTypeId != null">
+                facility_type_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="maintainTime != null">
+                maintain_time,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="facilityDepartmentId != null">
+                facility_department_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="facilityTypeId != null">
+                #{facilityTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maintainTime != null">
+                #{maintainTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="facilityDepartmentId != null">
+                #{facilityDepartmentId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        update h_facility
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="facilityTypeId != null">
+                facility_type_id = #{facilityTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maintainTime != null">
+                maintain_time = #{maintainTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="facilityDepartmentId != null">
+                facility_department_id = #{facilityDepartmentId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        update h_facility
+        set `name`                 = #{name,jdbcType=VARCHAR},
+            facility_type_id       = #{facilityTypeId,jdbcType=INTEGER},
+            create_time            = #{createTime,jdbcType=TIMESTAMP},
+            maintain_time          = #{maintainTime,jdbcType=TIMESTAMP},
+            price                  = #{price,jdbcType=DOUBLE},
+            facility_department_id = #{facilityDepartmentId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update h_facility
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="`name` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.name,jdbcType=VARCHAR}
+                </foreach>
+            </trim>
+            <trim prefix="facility_type_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.facilityTypeId,jdbcType=INTEGER}
+                </foreach>
+            </trim>
+            <trim prefix="create_time = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.createTime,jdbcType=TIMESTAMP}
+                </foreach>
+            </trim>
+            <trim prefix="maintain_time = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.maintainTime,jdbcType=TIMESTAMP}
+                </foreach>
+            </trim>
+            <trim prefix="price = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.price,jdbcType=DOUBLE}
+                </foreach>
+            </trim>
+            <trim prefix="facility_department_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.facilityDepartmentId,jdbcType=INTEGER}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update h_facility
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="`name` = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.name != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.name,jdbcType=VARCHAR}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="facility_type_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.facilityTypeId != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.facilityTypeId,jdbcType=INTEGER}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="create_time = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.createTime != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.createTime,jdbcType=TIMESTAMP}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="maintain_time = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.maintainTime != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.maintainTime,jdbcType=TIMESTAMP}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="price = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.price != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.price,jdbcType=DOUBLE}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="facility_department_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.facilityDepartmentId != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.facilityDepartmentId,jdbcType=INTEGER}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.id,jdbcType=INTEGER}
+        </foreach>
+    </update>
+    <insert id="batchInsert" parameterType="map">
+        <!--@mbg.generated-->
+        insert into h_facility
+                (id, `name`, facility_type_id, create_time, maintain_time, price, facility_department_id)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.facilityTypeId,jdbcType=INTEGER},
+             #{item.createTime,jdbcType=TIMESTAMP}, #{item.maintainTime,jdbcType=TIMESTAMP},
+             #{item.price,jdbcType=DOUBLE}, #{item.facilityDepartmentId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <insert id="insertOrUpdate" parameterType="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        insert into h_facility
+                (id, `name`, facility_type_id, create_time, maintain_time, price, facility_department_id)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{facilityTypeId,jdbcType=INTEGER},
+                #{createTime,jdbcType=TIMESTAMP}, #{maintainTime,jdbcType=TIMESTAMP}, #{price,jdbcType=DOUBLE},
+                #{facilityDepartmentId,jdbcType=INTEGER}) on duplicate key
+        update
+                id = #{id,jdbcType=INTEGER},
+                `name` = #{name,jdbcType=VARCHAR},
+                facility_type_id = #{facilityTypeId,jdbcType=INTEGER},
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+                maintain_time = #{maintainTime,jdbcType=TIMESTAMP},
+                price = #{price,jdbcType=DOUBLE},
+                facility_department_id = #{facilityDepartmentId,jdbcType=INTEGER}
+    </insert>
+    <insert id="insertOrUpdateSelective" parameterType="com.zzy.pojo.HFacility">
+        <!--@mbg.generated-->
+        insert into h_facility
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="facilityTypeId != null">
+                facility_type_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="maintainTime != null">
+                maintain_time,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="facilityDepartmentId != null">
+                facility_department_id,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="facilityTypeId != null">
+                #{facilityTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maintainTime != null">
+                #{maintainTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="facilityDepartmentId != null">
+                #{facilityDepartmentId,jdbcType=INTEGER},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="facilityTypeId != null">
+                facility_type_id = #{facilityTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maintainTime != null">
+                maintain_time = #{maintainTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DOUBLE},
+            </if>
+            <if test="facilityDepartmentId != null">
+                facility_department_id = #{facilityDepartmentId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+</mapper>
